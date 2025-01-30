@@ -1,6 +1,6 @@
 --[[ 
 Blox Fruits Auto Farm Level Script with GUI 
-Features: Auto-Farm Level 1 - 2600 with Quest Handling, Enemy Targeting, Fast Attack, and Toggle 
+Features: Auto-Farm Level 1 - 2600 with Quest Handling, Enemy Targeting, Fast Attack, Toggle 
 Note: Use responsibly and follow the game's terms of service. 
 ]]--
 
@@ -79,6 +79,14 @@ local function RedeemQuest(questName)
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(unpack(args))
 end
 
+-- Function: Perform Attack
+local function PerformAttack()
+    local args = {
+        [1] = 0.5 -- Attack damage multiplier (or time)
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE"):WaitForChild("RegisterAttack"):FireServer(unpack(args))
+end
+
 -- Function: Auto Farm
 local farmingActive = false
 
@@ -140,9 +148,8 @@ local function AutoFarm()
                     TweenToPosition(enemy.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3), 0.5)
                     repeat
                         wait(0.1)
-                        if Character:FindFirstChildOfClass("Tool") then
-                            Character:FindFirstChildOfClass("Tool"):Activate()
-                        end
+                        -- Perform the attack while the enemy is alive
+                        PerformAttack()
                     until enemy.Humanoid.Health <= 0 or not enemy.Parent
                 end
             end
